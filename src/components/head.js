@@ -52,6 +52,11 @@ const Head = ({ title, description, image }) => {
       <meta property="og:image" content={seo.image} />
       <meta property="og:url" content={seo.url} />
       <meta property="og:type" content="website" />
+    
+      <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+      <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+      <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192" />
+      <link rel="icon" type="image/png" href="/favicon-512x512.png" sizes="512x512" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content={twitterUsername} />
