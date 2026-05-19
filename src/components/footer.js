@@ -8,8 +8,9 @@ const StyledFooter = styled.footer`
   flex-direction: column;
   height: auto;
   min-height: 70px;
-  padding: 15px;
+  padding: 25px 15px;  /* ✅ increase top/bottom from 15px to 25px */
   text-align: center;
+  gap: 10px;  /* ✅ ADD — controls space between each child element */
 `;
 
 const StyledScrollToTop = styled.button`
@@ -19,7 +20,7 @@ const StyledScrollToTop = styled.button`
   width: 50px;
   height: 50px;
   padding: 10px;
-  margin: 0 auto 25px;
+  margin: 0 auto 15px;
   border: 2px solid var(--green);
   border-radius: 12px;
   background-color: transparent;
@@ -86,7 +87,8 @@ const StyledCredit = styled.div`
   color: var(--light-slate);
   font-family: var(--font-mono);
   font-size: var(--fz-xxs);
-  line-height: 1;
+  line-height: 2.5;
+   margin-top: 0px; 
   }
 `;
 

@@ -180,19 +180,18 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .numbered-heading {
-    display: flex;
-    align-items: center;
-    position: relative;
-    margin: 10px 0 40px;
-    width: 100%;
-    font-size: clamp(26px, 5vw, var(--fz-heading));
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 10px 0 40px;
+  width: 100%;
+  font-size: clamp(26px, 5vw, var(--fz-heading));
+  white-space: nowrap;
 
-    /* ✅ CHANGED: mobile override — 24px size, allow wrapping */
-    @media (max-width: 768px) {
-      font-size: 24px;
-      //white-space: normal;
-    }
+  @media (max-width: 768px) {
+    font-size: 22px;
+    white-space: nowrap;   /* keep this */
+  }
 
     &:before {
       position: relative;
@@ -205,10 +204,10 @@ const GlobalStyle = createGlobalStyle`
       font-size: clamp(var(--fz-md), 3vw, var(--fz-xl));
       font-weight: 400;
 
-      @media (max-width: 480px) {
-        margin-bottom: -3px;
-        margin-right: 5px;
-      }
+       @media (max-width: 480px) {
+    font-size: clamp(14px, 4vw, 18px);  /* shrinks fluidly with viewport */
+    white-space: nowrap;
+  }
     }
 
     &:after {

@@ -25,6 +25,8 @@ const StyledProject = styled.li`
 
   @media (max-width: 768px) {
     ${({ theme }) => theme.mixins.boxShadow};
+    overflow: hidden;       
+    border-radius: var(--border-radius);
   }
 
   &:not(:last-of-type) {
@@ -240,7 +242,7 @@ const StyledProject = styled.li`
     }
   }
 
-  .project-image {
+ .project-image {
     ${({ theme }) => theme.mixins.boxShadow};
     grid-column: 7 / -1;
     grid-row: 1 / -1;
@@ -256,18 +258,33 @@ const StyledProject = styled.li`
       max-width: 450px;
     }
 
+    /* ✅ REPLACE the old 768px and 480px blocks with these */
     @media (max-width: 768px) {
-      grid-column: 1 / -1;
-      height: 300px;
-      max-height: 300px;
-      width: 100%;
-      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      max-height: none;
+      max-width: none;
+      opacity: 0.15;
+      z-index: 1;
+
+    .gatsby-image-wrapper {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+      a {
+        height: 100%;
+      }
     }
 
     @media (max-width: 480px) {
-      height: 250px;
-      max-height: 250px;
-      opacity: 0.6;
+      opacity: 0.12;
     }
 
     a {
@@ -310,14 +327,14 @@ const StyledProject = styled.li`
       border-radius: var(--border-radius);
       mix-blend-mode: multiply;
       filter: grayscale(100%) contrast(1) brightness(90%);
-      width: 100% !important; // ← add this
-      height: 100% !important; // ← add this
-      object-fit: cover; // ← add this
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
 
       @media (max-width: 768px) {
         object-fit: cover;
-        width: auto;
-        height: 100%;
+        width: 100% !important;
+        height: 100% !important;
         filter: grayscale(100%) contrast(1) brightness(50%);
       }
     }
@@ -368,7 +385,7 @@ const Publication = () => {
   return (
     <section id="publications">
       <h2 className="numbered-heading" ref={revealTitle}>
-        Publications
+        Some of my Research Work
       </h2>
 
       <StyledProjectsGrid>
