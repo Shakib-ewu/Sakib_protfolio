@@ -248,17 +248,17 @@ const StyledProject = styled.li`
     grid-row: 1 / -1;
     position: relative;
     z-index: 1;
-    height: auto;
+    height: auto; 
     width: 100%;
     max-height: 400px;
     max-width: 500px;
+
 
     @media (max-width: 1080px) {
       max-height: 350px;
       max-width: 450px;
     }
 
-    /* ✅ REPLACE the old 768px and 480px blocks with these */
     @media (max-width: 768px) {
       position: absolute;
       top: 0;
@@ -269,17 +269,10 @@ const StyledProject = styled.li`
       max-width: none;
       opacity: 0.15;
       z-index: 1;
-
-    .gatsby-image-wrapper {
-    position: absolute !important;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
+  
       a {
         height: 100%;
+        position: relative;
       }
     }
 
@@ -440,7 +433,13 @@ const Publication = () => {
 
                 <div className="project-image">
                   <a href={external ? external : github ? github : '#'}>
-                    <GatsbyImage image={image} alt={title} className="img" />
+                    <GatsbyImage
+                      image={image}
+                      alt={title}
+                      className="img"
+                      style={{ height: '100%' }}
+                      imgStyle={{ objectFit: 'cover' }}
+                    />
                   </a>
                 </div>
               </StyledProject>

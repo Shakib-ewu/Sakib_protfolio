@@ -1,7 +1,7 @@
 ---
 date: '1'
 title: 'Automatic Speed Control and Accident Avoidance Of vehicles using Multiple Sensors: In the Context Of Bangladesh'
-cover: './aut.png'
+cover: './pub-2.png'
 external: 'https://www.researchgate.net/publication/353315532_Automatic_Speed_Control_and_Accident_Avoidance_Of_vehicles_using_Multiple_Sensors_In_the_Context_Of_Bangladesh'
 tech: []
 ---
