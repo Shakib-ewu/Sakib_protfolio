@@ -126,7 +126,7 @@ const About = () => {
   }, []);
 
   const skills = [
-    'JavaScript (ES6+)',
+    'JavaScript',
     'Shopify',
     'Playwright',
     'Cypress',
