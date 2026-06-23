@@ -162,7 +162,7 @@ const About = () => {
             <p>
               I focus on finding and fixing complex defects so users get a dependable product. I
               work closely with developers, product managers, and designers on eCommerce and
-              API-heavy systems. With about two and a half years in the role, I put emphasis on
+              API-heavy systems. With about four years in the role, I put emphasis on
               clear communication, solid teamwork, and practical issue tracking.
             </p>
             <p>
