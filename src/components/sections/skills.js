@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
-import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import { KEY_CODES } from '@utils';
@@ -126,9 +125,7 @@ const StyledHighlight = styled.div`
   height: var(--tab-height);
   border-radius: var(--border-radius);
   background: var(--yellow);
-  transform: translateY(calc(${({ activeTabId }) => activeTabId} * var(--tab-height)));
   transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition-delay: 0.1s;
 
   /* Hidden on mobile — pill buttons handle active state */
   @media (max-width: 600px) {
@@ -136,7 +133,10 @@ const StyledHighlight = styled.div`
   }
 `;
 
+// All panels share one grid cell, so the container is always as tall as the
+// tallest panel: switching tabs cross-fades in place and never shifts the page.
 const StyledTabPanels = styled.div`
+  display: grid;
   position: relative;
   width: 100%;
   margin-left: 20px;
@@ -147,9 +147,25 @@ const StyledTabPanels = styled.div`
 `;
 
 const StyledTabPanel = styled.div`
+  grid-area: 1 / 1;
   width: 100%;
   height: auto;
   padding: 10px 5px;
+  /* Outgoing panel fades out quickly; the incoming one starts just after, so the
+     two sets of badges barely overlap mid-switch */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s var(--easing), visibility 0.15s;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s var(--easing) 0.1s, visibility 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 
   @media (max-width: 600px) {
     padding: 20px 16px; /* comfortable inner breathing room */
@@ -298,19 +314,22 @@ const Skills = () => {
               return (
                 <StyledTabButton
                   key={i}
-                  isActive={activeTabId === i}
                   onClick={() => setActiveTabId(i)}
                   ref={el => (tabs.current[i] = el)}
-                  id={`tab-${i}`}
+                  id={`skills-tab-${i}`}
                   role="tab"
                   tabIndex={activeTabId === i ? '0' : '-1'}
                   aria-selected={activeTabId === i ? true : false}
-                  aria-controls={`panel-${i}`}>
+                  aria-controls={`skills-panel-${i}`}>
                   <span>{title}</span>
                 </StyledTabButton>
               );
             })}
-          <StyledHighlight activeTabId={activeTabId} />
+          {/* Inline transform: a styled prop here would make styled-components
+              insert a new CSS rule on every tab change */}
+          <StyledHighlight
+            style={{ transform: `translateY(calc(${activeTabId} * var(--tab-height)))` }}
+          />
         </StyledTabList>
 
         <StyledTabPanels>
@@ -319,17 +338,16 @@ const Skills = () => {
               const { html } = node;
 
               return (
-                <CSSTransition key={i} in={activeTabId === i} timeout={250} classNames="fade">
-                  <StyledTabPanel
-                    id={`panel-${i}`}
-                    role="tabpanel"
-                    tabIndex={activeTabId === i ? '0' : '-1'}
-                    aria-labelledby={`tab-${i}`}
-                    aria-hidden={activeTabId !== i}
-                    hidden={activeTabId !== i}>
-                    <div dangerouslySetInnerHTML={{ __html: html }} />
-                  </StyledTabPanel>
-                </CSSTransition>
+                <StyledTabPanel
+                  key={i}
+                  className={activeTabId === i ? 'active' : undefined}
+                  id={`skills-panel-${i}`}
+                  role="tabpanel"
+                  tabIndex={activeTabId === i ? '0' : '-1'}
+                  aria-labelledby={`skills-tab-${i}`}
+                  aria-hidden={activeTabId !== i}>
+                  <div dangerouslySetInnerHTML={{ __html: html }} />
+                </StyledTabPanel>
               );
             })}
         </StyledTabPanels>
