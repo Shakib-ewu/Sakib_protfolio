@@ -69,7 +69,7 @@ const StyledTabButton = styled.button`
   padding: 0 20px 2px;
   border-left: 2px solid var(--lightest-navy);
   background-color: transparent;
-  color: ${({ isActive }) => (isActive ? 'var(--green)' : 'var(--slate)')};
+  color: ${({ isActive }) => (isActive ? 'var(--yellow)' : 'var(--slate)')};
   font-family: var(--font-mono);
   font-size: var(--fz-xs);
   text-align: left;
@@ -87,7 +87,7 @@ const StyledTabButton = styled.button`
     border-left: 0;
     border-bottom: 0;
     border-radius: 20px;
-    background-color: ${({ isActive }) => (isActive ? 'var(--green)' : 'var(--light-navy)')};
+    background-color: ${({ isActive }) => (isActive ? 'var(--yellow)' : 'var(--light-navy)')};
     color: ${({ isActive }) => (isActive ? 'var(--navy)' : 'var(--slate)')};
     font-weight: ${({ isActive }) => (isActive ? '600' : '400')};
     text-align: center;
@@ -98,7 +98,7 @@ const StyledTabButton = styled.button`
     background-color: var(--light-navy);
 
     @media (max-width: 600px) {
-      background-color: ${({ isActive }) => (isActive ? 'var(--green)' : 'var(--lightest-navy)')};
+      background-color: ${({ isActive }) => (isActive ? 'var(--yellow)' : 'var(--lightest-navy)')};
     }
   }
 `;
@@ -111,7 +111,7 @@ const StyledHighlight = styled.div`
   width: 2px;
   height: var(--tab-height);
   border-radius: var(--border-radius);
-  background: var(--green);
+  background: var(--yellow);
   transform: translateY(calc(${({ activeTabId }) => activeTabId} * var(--tab-height)));
   transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-delay: 0.1s;
@@ -162,7 +162,7 @@ const StyledTabPanel = styled.div`
     }
 
     .company {
-      color: var(--green);
+      color: var(--yellow);
     }
   }
 

@@ -35,12 +35,12 @@ const StyledAwardCard = styled.li`
 
   &:hover {
     background-color: rgba(23, 43, 77, 0.5);
-    border-color: var(--green);
+    border-color: var(--yellow);
     transform: translateY(-5px);
   }
 
   .award-date {
-    color: var(--green);
+    color: var(--yellow);
     font-family: var(--font-mono);
     font-size: var(--fz-xs);
     margin-bottom: 15px;
@@ -88,7 +88,7 @@ const StyledAwardCard = styled.li`
       height: 48px;
       border-radius: 50%;
       background-color: rgba(16, 185, 129, 0.15);
-      border: 1px solid var(--green);
+      border: 1px solid var(--yellow);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -107,8 +107,8 @@ const StyledAwardCard = styled.li`
       .award-tag {
         padding: 3px 10px;
         border-radius: 20px;
-        border: 1px solid var(--green);
-        color: var(--green);
+        border: 1px solid var(--yellow);
+        color: var(--yellow);
         font-size: var(--fz-xxs);
         white-space: nowrap;
       }
@@ -137,8 +137,8 @@ const StyledAwardCard = styled.li`
       }
 
       &.award-badge {
-        color: var(--green);
-        border-color: var(--green);
+        color: var(--yellow);
+        border-color: var(--yellow);
         background-color: rgba(16, 185, 129, 0.1);
       }
 

@@ -1,118 +1,165 @@
-import React, { useMemo } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { usePrefersReducedMotion } from '@hooks';
 
-const COLORS = ['#c8006e', '#9b1fad', '#e0005a', '#6a0aaa', '#1a0a3e'];
+// Constellation background: slowly drifting dots joined by faint lines when
+// they come close. Purely ambient — no mouse interaction.
 
-const generateParticles = (count = 280) => {
-  // We need viewport size to radiate from center.
-  // Use percentage-based center offset as a fallback for SSR safety.
-  const W = typeof window !== 'undefined' ? window.innerWidth : 1440;
-  const H = typeof window !== 'undefined' ? window.innerHeight : 900;
-  const cx = W / 2;
-  const cy = H / 2;
+const LINK_DISTANCE = 170; // px; dots closer than this get a connecting line
+const DOT_RGB = '136, 146, 176'; // --slate
+const LINE_RGB = '255, 214, 10'; // --yellow
 
-  return Array.from({ length: count }, (_, i) => {
+const StyledBackground = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const createDots = (count, width, height) =>
+  Array.from({ length: count }, () => {
     const angle = Math.random() * Math.PI * 2;
-    const dist = 30 + Math.random() * Math.max(W, H) * 0.52;
-
-    // Absolute px start position (radiated from center)
-    const startX = cx + Math.cos(angle) * dist;
-    const startY = cy + Math.sin(angle) * dist;
-
-    // Drift direction: mostly outward with slight variance
-    const driftAngle = angle + (Math.random() - 0.5) * 0.7;
-    const driftDist = 40 + Math.random() * 90;
-    const dx = Math.cos(driftAngle) * driftDist;
-    const dy = Math.sin(driftAngle) * driftDist;
-
-    // Dash shape: some wide, some tall
-    const isWide = Math.random() > 0.45;
-    const width = isWide ? 3 + Math.random() * 5 : 1.5 + Math.random() * 2.5;
-    const height = isWide ? 1.5 + Math.random() * 2 : 3 + Math.random() * 5;
-
+    const speed = 6 + Math.random() * 12; // px per second
     return {
-      id: i,
-      startX,
-      startY,
-      dx,
-      dy,
-      width,
-      height,
-      rot: Math.random() * 360,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      duration: 18 + Math.random() * 28,
-      delay: -(Math.random() * (18 + Math.random() * 28)), // negative = start mid-animation
-      maxOpacity: 0.45 + Math.random() * 0.45,
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      r: 1.2 + Math.random() * 1.8,
     };
   });
-};
 
-// Each particle drifts outward and fades in/out
-const drift = (dx, dy, rot) => keyframes`
-  0%   { opacity: 0;   transform: translate(0, 0) rotate(${rot}deg); }
-  10%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { opacity: 0;   transform: translate(${dx}px, ${dy}px) rotate(${rot + 20}deg); }
-`;
+const FloatingParticles = ({ count }) => {
+  const canvasRef = useRef(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-const StyledParticles = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-`;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let width = 0;
+    let height = 0;
+    let dots = [];
+    let frameId = null;
+    let lastTime = null;
 
-const Particle = styled.div`
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0;
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  left: ${({ $startX }) => $startX}px;
-  top: ${({ $startY }) => $startY}px;
-  width: ${({ $width }) => $width}px;
-  height: ${({ $height }) => $height}px;
-  background-color: ${({ $color }) => $color};
+      // Fewer dots on small screens so the effect stays light and uncluttered
+      const scale = Math.min(1, (width * height) / (1440 * 900));
+      const target = Math.max(18, Math.round(count * scale));
 
-  animation: ${({ $dx, $dy, $rot }) => drift($dx, $dy, $rot)}
-    ${({ $duration }) => $duration}s
-    linear
-    ${({ $delay }) => $delay}s
-    infinite;
+      // Keep existing dots across resizes. Mobile browsers resize the viewport
+      // whenever the address bar shows/hides; regenerating would make every dot
+      // jump to a new random spot at once (a visible "glitter").
+      dots.forEach(dot => {
+        dot.x = Math.min(dot.x, width);
+        dot.y = Math.min(dot.y, height);
+      });
+      if (dots.length < target) {
+        dots = dots.concat(createDots(target - dots.length, width, height));
+      } else {
+        dots.length = target;
+      }
+    };
 
-  /* Clamp actual opacity by maxOpacity via filter — styled-components
-     can't interpolate CSS custom props in keyframes cleanly, so we
-     scale down the whole element instead */
-  opacity: 0;
-  filter: opacity(${({ $maxOpacity }) => $maxOpacity});
-`;
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
 
-const FloatingParticles = ({ count = 280 }) => {
-  const particles = useMemo(() => generateParticles(count), [count]);
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = dots[i].x - dots[j].x;
+          const dy = dots[i].y - dots[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < LINK_DISTANCE) {
+            ctx.strokeStyle = `rgba(${LINE_RGB}, ${(1 - dist / LINK_DISTANCE) * 0.3})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.fillStyle = `rgba(${DOT_RGB}, 0.75)`;
+      dots.forEach(dot => {
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    };
+
+    const step = time => {
+      // Cap the delta so dots don't jump after the tab was in the background
+      const delta = lastTime === null ? 0 : Math.min((time - lastTime) / 1000, 0.05);
+      lastTime = time;
+
+      dots.forEach(dot => {
+        dot.x += dot.vx * delta;
+        dot.y += dot.vy * delta;
+        if (dot.x < 0 || dot.x > width) {
+          dot.vx *= -1;
+          dot.x = Math.max(0, Math.min(width, dot.x));
+        }
+        if (dot.y < 0 || dot.y > height) {
+          dot.vy *= -1;
+          dot.y = Math.max(0, Math.min(height, dot.y));
+        }
+      });
+
+      draw();
+      frameId = window.requestAnimationFrame(step);
+    };
+
+    const handleResize = () => {
+      resize();
+      if (prefersReducedMotion) {
+        draw();
+      }
+    };
+
+    resize();
+    if (prefersReducedMotion) {
+      draw();
+    } else {
+      frameId = window.requestAnimationFrame(step);
+    }
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+    };
+  }, [count, prefersReducedMotion]);
 
   return (
-    <StyledParticles>
-      {particles.map(p => (
-        <Particle
-          key={p.id}
-          $startX={p.startX}
-          $startY={p.startY}
-          $dx={p.dx}
-          $dy={p.dy}
-          $width={p.width}
-          $height={p.height}
-          $rot={p.rot}
-          $color={p.color}
-          $duration={p.duration}
-          $delay={p.delay}
-          $maxOpacity={p.maxOpacity}
-        />
-      ))}
-    </StyledParticles>
+    <StyledBackground aria-hidden="true">
+      <canvas ref={canvasRef} />
+    </StyledBackground>
   );
+};
+
+FloatingParticles.propTypes = {
+  count: PropTypes.number,
+};
+
+FloatingParticles.defaultProps = {
+  count: 60,
 };
 
 export default FloatingParticles;

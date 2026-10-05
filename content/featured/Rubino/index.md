@@ -3,7 +3,7 @@ date: '3'
 title: 'Rubino Cypress'
 cover: './rubino.png'
 github: 'https://github.com/Shakib-ewu/Cypress-Automation_CI-CD-intregation'
-external: 'www.rubinoshoes.com'
+external: 'https://www.rubinoshoes.com/'
 tech:
   - JavaScript
   - Cypress

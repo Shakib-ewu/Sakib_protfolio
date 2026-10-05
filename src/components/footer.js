@@ -21,17 +21,17 @@ const StyledScrollToTop = styled.button`
   height: 50px;
   padding: 10px;
   margin: 0 auto 15px;
-  border: 2px solid var(--green);
+  border: 2px solid var(--yellow);
   border-radius: 12px;
   background-color: transparent;
-  color: var(--green);
+  color: var(--yellow);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   outline: none;
 
   &:hover,
   &:focus {
-    background-color: rgba(100, 255, 218, 0.1);
+    background-color: var(--yellow-tint);
     transform: translateY(-3px);
   }
 

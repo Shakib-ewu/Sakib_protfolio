@@ -63,7 +63,7 @@ const StyledTabButton = styled.button`
 
   /* desktop active */
   &[aria-selected='true'] {
-    color: var(--green);
+    color: var(--yellow);
   }
 
   @media (max-width: 768px) {
@@ -93,8 +93,8 @@ const StyledTabButton = styled.button`
        Use && to double specificity so it beats the mixin AND
        the base [aria-selected] rule above */
     &&[aria-selected='true'] {
-      background-color: var(--green);
-      border-color: var(--green);
+      background-color: var(--yellow);
+      border-color: var(--yellow);
       color: var(--navy) !important; /* dark navy on green = readable */
       font-weight: 700;
     }
@@ -103,8 +103,8 @@ const StyledTabButton = styled.button`
     &&[aria-selected='false']:hover,
     &&[aria-selected='false']:focus {
       background-color: var(--light-navy);
-      border-color: var(--green);
-      color: var(--green) !important;
+      border-color: var(--yellow);
+      color: var(--yellow) !important;
     }
   }
 
@@ -125,7 +125,7 @@ const StyledHighlight = styled.div`
   width: 2px;
   height: var(--tab-height);
   border-radius: var(--border-radius);
-  background: var(--green);
+  background: var(--yellow);
   transform: translateY(calc(${({ activeTabId }) => activeTabId} * var(--tab-height)));
   transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-delay: 0.1s;

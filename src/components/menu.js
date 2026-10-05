@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'gatsby';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navLinks } from '@config';
 import { KEY_CODES } from '@utils';
@@ -46,7 +47,7 @@ const StyledHamburgerButton = styled.button`
     width: var(--hamburger-width);
     height: 2px;
     border-radius: var(--border-radius);
-    background-color: var(--green);
+    background-color: var(--yellow);
     transition-duration: 0.22s;
     transition-property: transform;
     transition-delay: ${props => (props.menuOpen ? `0.12s` : `0s`)};
@@ -64,7 +65,7 @@ const StyledHamburgerButton = styled.button`
       width: var(--hamburger-width);
       height: 2px;
       border-radius: 4px;
-      background-color: var(--green);
+      background-color: var(--yellow);
       transition-timing-function: ease;
       transition-duration: 0.15s;
       transition-property: transform;
@@ -135,7 +136,7 @@ const StyledSidebar = styled.aside`
         content: '0' counter(item) '.';
         display: block;
         margin-bottom: 5px;
-        color: var(--green);
+        color: var(--yellow);
         font-size: var(--fz-sm);
       }
     }
@@ -155,7 +156,7 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-const Menu = () => {
+const Menu = ({ buttonClassName }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -243,6 +244,7 @@ const Menu = () => {
 
       <div ref={wrapperRef}>
         <StyledHamburgerButton
+          className={buttonClassName}
           onClick={toggleMenu}
           menuOpen={menuOpen}
           ref={buttonRef}
@@ -274,6 +276,10 @@ const Menu = () => {
       </div>
     </StyledMenu>
   );
+};
+
+Menu.propTypes = {
+  buttonClassName: PropTypes.string,
 };
 
 export default Menu;

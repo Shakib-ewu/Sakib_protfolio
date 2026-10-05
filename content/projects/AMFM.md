@@ -8,4 +8,4 @@ tech:
 showInProjects: true
 ---
 
-This project is a machine learning study focused on predicting suicidal behavior based on a variety of demographic, social, and psychological factors. It appears to be part of a thesis (based on the file path in your code) aimed at identifying high-risk individuals through computational modeling.
+A machine learning study that predicts suicidal behavior from demographic, social, and psychological factors, aimed at identifying high-risk individuals through computational modeling.
