@@ -6,7 +6,7 @@ import { navDelay } from '@utils';
 // exactly once, instead of being removed and re-added when React hydrates.
 const fadeUp = keyframes`
   from {
-    opacity: 0;
+    opacity: 0.01; /* not 0: fully transparent elements are ignored for LCP */
     transform: translateY(20px);
   }
   to {

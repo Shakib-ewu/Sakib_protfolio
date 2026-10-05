@@ -13,7 +13,7 @@ const STAGGER_MS = 80;
 
 const fadeIn = keyframes`
   from {
-    opacity: 0;
+    opacity: 0.01;
   }
   to {
     opacity: 1;
@@ -22,7 +22,7 @@ const fadeIn = keyframes`
 
 const fadeDown = keyframes`
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(-20px);
   }
   to {

@@ -395,7 +395,7 @@ const Publication = () => {
                     <p className="project-overline">Publication</p>
 
                     <h3 className="project-title">
-                      <a href={external}>{title}</a>
+                      <a href={external || github}>{title}</a>
                     </h3>
 
                     <div

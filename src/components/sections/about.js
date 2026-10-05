@@ -166,11 +166,9 @@ const About = () => {
               clear communication, solid teamwork, and practical issue tracking.
             </p>
             <p>
-              <p>
-                Outside of work, I'm an avid traveler and enjoy hiking and trekking. I also like
-                reading, movies, and spontaneous conversations with new people—that balance keeps me
-                grounded and motivated in my career.
-              </p>
+              Outside of work, I'm an avid traveler and enjoy hiking and trekking. I also like
+              reading, movies, and spontaneous conversations with new people—that balance keeps me
+              grounded and motivated in my career.
             </p>
 
             <p>Here are a few technologies I’ve been working with recently:</p>
@@ -187,7 +185,7 @@ const About = () => {
               className="img"
               src="../../images/ss.jpeg"
               width={500}
-              quality={95}
+              quality={80}
               formats={['AUTO', 'WEBP', 'AVIF']}
               alt="Headshot"
             />
