@@ -84,11 +84,22 @@ const StyledSocialLinks = styled.div`
 `;
 
 const StyledCredit = styled.div`
-  color: var(--light-slate);
+  /* Muted on purpose: neutral grey that still meets WCAG AA contrast (4.5:1)
+     on both the black and the white theme */
+  color: #767676;
   font-family: var(--font-mono);
   font-size: var(--fz-xxs);
   line-height: 2.5;
-   margin-top: 0px; 
+  margin-top: 0;
+
+  a {
+    color: inherit;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--slate);
+      text-decoration: underline;
+    }
   }
 `;
 

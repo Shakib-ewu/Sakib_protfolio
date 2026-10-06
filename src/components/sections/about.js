@@ -100,7 +100,7 @@ const StyledPic = styled.div`
     &:before {
       top: 0;
       left: 0;
-      background-color: var(--navy);
+      background-color: var(--photo-overlay);
       mix-blend-mode: screen;
     }
 
@@ -126,12 +126,12 @@ const About = () => {
   }, []);
 
   const skills = [
-    'JavaScript',
     'Shopify',
     'Playwright',
     'Cypress',
-    'Selenium',
     'Theme Development',
+    'Theme Customization',
+    'Migration',
   ];
 
   return (
@@ -141,34 +141,29 @@ const About = () => {
       <div className="inner">
         <StyledText>
           <div>
+            <p>I break software for living — so customers don’t have to.</p>
             <p>
-              I'm Sakib Sarkar, a QA Developer with a strong foundation in software quality
-              assurance and a deep passion for software engineering. I graduated from{' '}
-              <a href="https://www.ewubd.edu/" target="_blank" rel="noopener noreferrer">
-                East West University
-              </a>
-              , majoring in Computer Science and Engineering.
+              I’m Sakib Sarkar, QA Developer who enjoys finding what others miss. I work across
+              manual testing, automation, APIs, and eCommerce systems, turning messy edge cases into
+              reliable user experiences.
             </p>
             <p>
-              Since joining{' '}
-              <a href="https://www.bevycommerce.com/" target="_blank" rel="noopener noreferrer">
-                Bevy Commerce
-              </a>{' '}
-              in February 2022, I've specialized in manual and automation testing. I'm proficient in
-              JavaScript, Cypress, and the Selenium Java framework, and in writing test plans and
-              running thorough manual cases. I've automated workflows and hooked tests into CI/CD
-              with GitHub Actions and Jenkins to keep quality steady as we ship.
+              Much of my work is around Shopify — theme testing and customization, app testing, UI
+              validation, and migration testing for products, customers, and orders. I also prepare
+              scripts for migration checks, validate migrated data, review UI behavior, and create
+              clear QA documentation for teams.
             </p>
             <p>
-              I focus on finding and fixing complex defects so users get a dependable product. I
-              work closely with developers, product managers, and designers on eCommerce and
-              API-heavy systems. With about four years in the role, I put emphasis on
-              clear communication, solid teamwork, and practical issue tracking.
+              Most days revolve around automation, migration validation, UI testing, and one question
+              on repeat: “What happens if user does this instead?”
             </p>
             <p>
-              Outside of work, I'm an avid traveler and enjoy hiking and trekking. I also like
-              reading, movies, and spontaneous conversations with new people—that balance keeps me
-              grounded and motivated in my career.
+              I care about quality beyond passing test cases — product logic, usability, data
+              accuracy, hidden risks, and failures nobody thought to test.
+            </p>
+            <p>
+              When not chasing bugs, probably traveling, hiking, reading, watching movies, or
+              planning next adventure.
             </p>
 
             <p>Here are a few technologies I’ve been working with recently:</p>

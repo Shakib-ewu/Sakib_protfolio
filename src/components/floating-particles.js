@@ -7,8 +7,6 @@ import { usePrefersReducedMotion } from '@hooks';
 // they come close. Purely ambient — no mouse interaction.
 
 const LINK_DISTANCE = 170; // px; dots closer than this get a connecting line
-const DOT_RGB = '136, 146, 176'; // --slate
-const LINE_RGB = '255, 214, 10'; // --yellow
 
 const StyledBackground = styled.div`
   position: fixed;
@@ -48,6 +46,15 @@ const FloatingParticles = ({ count }) => {
     let dots = [];
     let frameId = null;
     let lastTime = null;
+    let dotRgb = '';
+    let lineRgb = '';
+
+    // Colours come from the theme's CSS variables (--dot-rgb, --line-rgb)
+    const readColors = () => {
+      const styles = getComputedStyle(document.documentElement);
+      dotRgb = styles.getPropertyValue('--dot-rgb').trim();
+      lineRgb = styles.getPropertyValue('--line-rgb').trim();
+    };
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -84,7 +91,7 @@ const FloatingParticles = ({ count }) => {
           const dy = dots[i].y - dots[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < LINK_DISTANCE) {
-            ctx.strokeStyle = `rgba(${LINE_RGB}, ${(1 - dist / LINK_DISTANCE) * 0.3})`;
+            ctx.strokeStyle = `rgba(${lineRgb}, ${(1 - dist / LINK_DISTANCE) * 0.3})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(dots[i].x, dots[i].y);
@@ -94,7 +101,7 @@ const FloatingParticles = ({ count }) => {
         }
       }
 
-      ctx.fillStyle = `rgba(${DOT_RGB}, 0.75)`;
+      ctx.fillStyle = `rgba(${dotRgb}, 0.75)`;
       dots.forEach(dot => {
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
@@ -131,6 +138,15 @@ const FloatingParticles = ({ count }) => {
       }
     };
 
+    // Re-read colours when the theme toggle flips data-theme on <html>
+    const themeObserver = new MutationObserver(() => {
+      readColors();
+      if (prefersReducedMotion) {
+        draw();
+      }
+    });
+
+    readColors();
     resize();
     if (prefersReducedMotion) {
       draw();
@@ -138,9 +154,11 @@ const FloatingParticles = ({ count }) => {
       frameId = window.requestAnimationFrame(step);
     }
     window.addEventListener('resize', handleResize);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      themeObserver.disconnect();
       if (frameId) {
         window.cancelAnimationFrame(frameId);
       }

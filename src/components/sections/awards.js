@@ -26,7 +26,7 @@ const StyledAwardCard = styled.li`
   padding: 30px;
   border: 1px solid var(--lightest-navy);
   border-radius: var(--border-radius);
-  background-color: rgba(23, 43, 77, 0.3);
+  background-color: var(--card-bg);
   transition: all 0.3s ease;
 
   @media (max-width: 768px) {
@@ -34,7 +34,7 @@ const StyledAwardCard = styled.li`
   }
 
   &:hover {
-    background-color: rgba(23, 43, 77, 0.5);
+    background-color: var(--card-bg-hover);
     border-color: var(--yellow);
     transform: translateY(-5px);
   }
@@ -87,13 +87,22 @@ const StyledAwardCard = styled.li`
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background-color: rgba(16, 185, 129, 0.15);
+      background-color: var(--yellow-tint);
       border: 1px solid var(--yellow);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
       flex-shrink: 0;
+
+      /* line-height: 1 makes the emoji's box match its glyph, so flexbox can
+         centre it exactly (the inherited body line-height pushed it off-centre) */
+      .icon-glyph {
+        display: block;
+        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+        font-size: 22px;
+        line-height: 1;
+        transform: translateY(-1px); /* optical centring of the emoji glyph */
+      }
     }
 
     .award-year {
@@ -139,7 +148,7 @@ const StyledAwardCard = styled.li`
       &.award-badge {
         color: var(--yellow);
         border-color: var(--yellow);
-        background-color: rgba(16, 185, 129, 0.1);
+        background-color: var(--yellow-tint);
       }
 
       &.org-badge {
@@ -199,7 +208,11 @@ const Awards = () => {
             return (
               <StyledAwardCard key={i}>
                 <div className="award-top-row">
-                  <div className="icon-circle">{icon}</div>
+                  <div className="icon-circle">
+                    <span className="icon-glyph" aria-hidden="true">
+                      {icon}
+                    </span>
+                  </div>
                   <div className="award-year">
                     <span className="award-tag">Award</span>
                     <span>{range}</span>

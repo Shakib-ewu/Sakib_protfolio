@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled, { css, keyframes } from 'styled-components';
 import { navLinks } from '@config';
 import { useScrollDirection } from '@hooks';
-import { Menu } from '@components';
+import { Menu, ThemeToggle } from '@components';
 import { IconLogo, IconHex } from '@components/icons';
 
 // Pure CSS entrance (home page only): every item plays its full animation,
@@ -54,7 +54,7 @@ const StyledHeader = styled.header`
   padding: 0px 50px;
   width: 100%;
   height: var(--nav-height);
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: var(--nav-bg);
   filter: none !important;
   pointer-events: auto !important;
   user-select: auto !important;
@@ -75,7 +75,7 @@ const StyledHeader = styled.header`
       css`
         height: var(--nav-scroll-height);
         transform: translateY(0px);
-        background-color: rgba(0, 0, 0, 0.85);
+        background-color: var(--nav-bg);
         box-shadow: 0 10px 30px -10px var(--navy-shadow);
       `};
 
@@ -98,6 +98,11 @@ const StyledNav = styled.nav`
   font-family: var(--font-mono);
   counter-reset: item 0;
   z-index: 12;
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+  }
 
   .logo {
     ${({ theme }) => theme.mixins.flexCenter};
@@ -239,20 +244,26 @@ const Nav = ({ isHome }) => {
       <StyledNav>
         {Logo}
 
-        <StyledLinks>
-          <ol>
-            {navLinks &&
-              navLinks.map(({ url, name }, i) => (
-                <li key={i} {...enter('nav-fade-down', i + 1)}>
-                  <Link to={url}>{name}</Link>
-                </li>
-              ))}
-          </ol>
+        <div className="nav-actions">
+          <StyledLinks>
+            <ol>
+              {navLinks &&
+                navLinks.map(({ url, name }, i) => (
+                  <li key={i} {...enter('nav-fade-down', i + 1)}>
+                    <Link to={url}>{name}</Link>
+                  </li>
+                ))}
+            </ol>
 
-          <div {...enter('nav-fade-down', navLinks.length + 1)}>{ResumeLink}</div>
-        </StyledLinks>
+            <div {...enter('nav-fade-down', navLinks.length + 1)}>{ResumeLink}</div>
+          </StyledLinks>
 
-        <Menu buttonClassName={isHome ? 'nav-fade-in' : undefined} />
+          <div {...enter('nav-fade-down', navLinks.length + 2)}>
+            <ThemeToggle />
+          </div>
+
+          <Menu buttonClassName={isHome ? 'nav-fade-in' : undefined} />
+        </div>
       </StyledNav>
     </StyledHeader>
   );

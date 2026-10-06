@@ -5,3 +5,5 @@
  */
 
 import './src/styles/fonts.css';
+// Handwritten heading in the Contact section (self-hosted, Latin subset only)
+import '@fontsource/caveat/latin-500.css';

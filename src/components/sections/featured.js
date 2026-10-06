@@ -278,7 +278,7 @@ const StyledProject = styled.li`
         bottom: 0;
         z-index: 3;
         transition: var(--transition);
-        background-color: var(--navy);
+        background-color: var(--photo-overlay);
         mix-blend-mode: screen;
       }
     }

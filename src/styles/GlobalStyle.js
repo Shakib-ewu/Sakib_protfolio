@@ -445,6 +445,17 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
+  /* Added by the theme toggle for ~400ms so colours fade instead of snapping.
+     The toggle's own icons keep their rotate/scale animation. */
+  html.theme-transition,
+  html.theme-transition *:not(.sun):not(.moon),
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, fill 0.4s ease,
+      stroke 0.4s ease, box-shadow 0.4s ease !important;
+    transition-delay: 0s !important;
+  }
+
   ${TransitionStyles};
 `;
 
