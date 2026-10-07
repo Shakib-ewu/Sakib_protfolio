@@ -1,0 +1,64 @@
+# Builds the Gatsby site and publishes it to GitHub Pages (https://shakib-ewu.github.io).
+# Runs only in the Shakib-ewu.github.io repository; the same code also lives in
+# Sakib_protfolio (deployed by Vercel), where this workflow does nothing.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; don't cancel a deployment that's in progress
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.repository == 'Shakib-ewu/Shakib-ewu.github.io'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/configure-pages@v5
+
+      # Reuse Gatsby's cache (processed images etc.) between builds
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .cache
+            public
+          key: gatsby-${{ runner.os }}-${{ hashFiles('package.json') }}-${{ github.sha }}
+          restore-keys: gatsby-${{ runner.os }}-${{ hashFiles('package.json') }}-
+
+      - name: Install dependencies
+        # package-lock.json isn't committed; same flags as the Vercel build
+        run: npm install --legacy-peer-deps --no-audit --no-fund
+
+      - name: Build
+        run: npx gatsby build
+        env:
+          GATSBY_TELEMETRY_DISABLED: 1
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
