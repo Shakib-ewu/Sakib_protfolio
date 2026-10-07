@@ -12,9 +12,9 @@ const themeScript = `(function(){try{if(localStorage.getItem('theme')==='light')
 
 // Paint the page background before any JS/CSS loads, so a reload never flashes
 // the browser's default background. Keep in sync with --navy in each theme.
+// <html> only: a <body> background would cover the z-index:-1 background canvases.
 const backgroundCss =
-  'html,body{background-color:#000000;}' +
-  'html[data-theme=light],html[data-theme=light] body{background-color:#ffffff;}';
+  'html{background-color:#000000;}html[data-theme=light]{background-color:#ffffff;}';
 
 exports.onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([

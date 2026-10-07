@@ -22,9 +22,8 @@ const variables = css`
     --card-bg-hover: rgba(23, 43, 77, 0.5);
     /* black + mix-blend-mode: screen leaves photos untouched in both themes */
     --photo-overlay: #000000;
-    /* read by the canvas background (comma-separated RGB) */
-    --dot-rgb: 136, 146, 176;
-    --line-rgb: 255, 214, 10;
+    /* read by the birds canvas (comma-separated RGB) */
+    --bird-rgb: 255, 214, 10;
 
     /* neutral surfaces (Contact card) */
     --surface: #141414;
@@ -87,8 +86,7 @@ const variables = css`
     --nav-bg: rgba(255, 255, 255, 0.85);
     --card-bg: rgba(15, 23, 42, 0.03);
     --card-bg-hover: rgba(15, 23, 42, 0.06);
-    --dot-rgb: 100, 116, 139;
-    --line-rgb: 161, 98, 7;
+    --bird-rgb: 161, 98, 7;
 
     --surface: #f6f7f9;
     --surface-border: rgba(15, 23, 42, 0.1);

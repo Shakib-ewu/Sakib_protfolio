@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
-import { Head, Nav, Social, Email, Footer, FloatingParticles } from '@components';
+import { Head, Nav, Social, Email, Footer, FlyingBirds } from '@components';
 import { GlobalStyle, theme } from '@styles';
 
 const StyledContent = styled.div`
@@ -48,7 +48,7 @@ const Layout = ({ children, location }) => {
       <div id="root">
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <FloatingParticles count={50} />
+          <FlyingBirds />
 
           <a className="skip-to-content" href="#content">
             Skip to Content

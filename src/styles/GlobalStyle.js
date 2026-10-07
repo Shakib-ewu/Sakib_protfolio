@@ -9,6 +9,9 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     width: 100%;
     scroll-behavior: smooth;
+    /* The page background lives on <html> only. If <body> also had one, it would
+       paint over the fixed background canvases (z-index: -1) and hide them. */
+    background-color: var(--navy);
   }
 
   *,
@@ -71,7 +74,6 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: var(--navy);
     color: var(--slate);
     font-family: var(--font-sans);
     font-size: var(--fz-xl);
